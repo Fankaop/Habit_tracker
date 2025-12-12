@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Habit Tracker{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'core/css/styles.css' %}">
+    {% block head %}{% endblock %}
+</head>
+<body class="bg-gray-50 font-sans">
+    <header class="fixed top-0 w-full bg-white/80 backdrop-blur-md shadow-sm z-50 px-6 py-4">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <h1 class="text-xl font-semibold text-gray-800">Habit Tracker</h1>
+            <nav class="space-x-6">
+                <a href="#" class="text-gray-600 hover:text-gray-900 transition-colors">Home</a>
+                <a href="#" class="text-gray-600 hover:text-gray-900 transition-colors">Habits</a>
+                <a href="#" class="text-gray-600 hover:text-gray-900 transition-colors">Stats</a>
+            </nav>
+        </div>
+    </header>
+
+    <div id="content-area"
+         hx-get="{% url 'home' %}"
+         hx-trigger="load"
+         hx-target="#content-area"
+         hx-swap="innerHTML"
+         class="pt-20 min-h-screen">
+        {% block content %}{% endblock %}
+    </div>
+
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <script src="{% static 'core/js/main.js' %}"></script>
+    {% block scripts %}{% endblock %}
+</body>
+</html>
