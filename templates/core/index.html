@@ -1,36 +1,141 @@
-<div class="max-w-7xl mx-auto px-6 py-12">
-    <div class="text-center mb-16 animate-fade-in">
-        <h1 id="main-title" class="text-4xl md:text-6xl font-bold text-gray-900 mb-4">{% if title %}{{ title }}{% else %}Welcome to Habit Tracker{% endif %}</h1>
-        <p class="text-xl text-gray-600 max-w-2xl mx-auto">Build better habits, track your progress, and achieve your goals with our intuitive habit tracking platform.</p>
+{% extends 'core/base.html' %}
+
+{% block title %}Главная{% endblock %}
+
+{% block content %}
+<div class="relative overflow-hidden bg-white">
+  <!-- Sea background (soft waves + glow) -->
+  <div class="absolute inset-0 -z-10">
+    <!-- soft top glow -->
+    <div class="absolute -top-24 left-1/2 h-72 w-[42rem] -translate-x-1/2 rounded-full bg-sky-200/45 blur-3xl"></div>
+    <!-- side glow -->
+    <div class="absolute top-40 right-[-14rem] h-96 w-96 rounded-full bg-cyan-200/35 blur-3xl"></div>
+
+    <!-- wave svg -->
+    <svg class="absolute bottom-[-2px] left-0 w-full opacity-70" viewBox="0 0 1440 220" preserveAspectRatio="none" aria-hidden="true">
+      <path fill="rgba(56,189,248,0.18)" d="M0,160 C120,140 240,180 360,170 C480,160 600,110 720,115 C840,120 960,175 1080,170 C1200,165 1320,125 1440,135 L1440,220 L0,220 Z"></path>
+      <path fill="rgba(14,165,233,0.10)" d="M0,175 C140,150 260,210 380,200 C500,190 620,120 740,125 C860,130 980,205 1100,200 C1220,195 1340,145 1440,150 L1440,220 L0,220 Z"></path>
+    </svg>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-6 py-14 md:py-20">
+    <!-- HERO -->
+    <div class="text-center mb-14">
+      <div class="inline-flex items-center gap-2 rounded-full border border-sky-100 bg-white/80 px-4 py-1.5 text-sm text-gray-700 shadow-sm backdrop-blur">
+        <span class="inline-block h-2 w-2 rounded-full bg-sky-500"></span>
+        <span>Habit Tracker — спокойный прогресс каждый день</span>
+      </div>
+
+      <h1 id="main-title" class="mt-5 text-4xl md:text-6xl font-extrabold tracking-tight text-gray-900">
+        {% if title %}{{ title }}{% else %}Welcome to Habit Tracker{% endif %}
+      </h1>
+
+      <p class="mt-5 text-lg md:text-xl text-gray-600 max-w-2xl mx-auto">
+        Стройте лучшие привычки, отслеживайте свой прогресс и достигайте целей.
+      </p>
+
+      <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
+        <a href="{% url 'login' %}"
+           class="inline-flex items-center justify-center rounded-xl bg-sky-600 px-6 py-3 text-white font-semibold shadow-sm hover:bg-sky-700 transition active:scale-[0.99]">
+          Начать
+        </a>
+
+        <a href="{% url 'login' %}"
+           class="inline-flex items-center justify-center rounded-xl border border-gray-200 bg-white px-6 py-3 text-gray-900 font-semibold shadow-sm hover:border-sky-200 hover:shadow-md transition">
+          Войти
+        </a>
+      </div>
+
+      <div class="mt-6 flex items-center justify-center gap-6 text-sm text-gray-500">
+        <span class="inline-flex items-center gap-2">
+          <span class="h-1.5 w-1.5 rounded-full bg-sky-500"></span> Чистый интерфейс
+        </span>
+        <span class="inline-flex items-center gap-2">
+          <span class="h-1.5 w-1.5 rounded-full bg-sky-500"></span> Ежедневные серии
+        </span>
+        <span class="inline-flex items-center gap-2">
+          <span class="h-1.5 w-1.5 rounded-full bg-sky-500"></span> Простая статистика
+        </span>
+      </div>
     </div>
 
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-        {% for item in items %}
-        <div class="card bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300 p-6 animate-slide-up" style="animation-delay: {{ forloop.counter }}00ms">
-            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
-                <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                </svg>
+    <!-- CARDS -->
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-14">
+      {% for habit in habits %}
+      <div
+        class="group rounded-2xl border border-gray-200 bg-white/80 shadow-sm backdrop-blur
+               hover:shadow-lg hover:border-sky-200 transition duration-300 p-6">
+        <div class="flex items-start justify-between mb-5">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-xl bg-sky-50 border border-sky-100 flex items-center justify-center
+                        group-hover:bg-sky-100 transition">
+              <svg class="w-6 h-6 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
             </div>
-            <h3 class="text-lg font-semibold text-gray-900 mb-2">{% if item.title %}{{ item.title }}{% else %}Habit Title{% endif %}</h3>
-            <p class="text-gray-600 mb-4">{% if item.description %}{{ item.description }}{% else %}Track your daily habits and build consistency.{% endif %}</p>
-            <div class="flex items-center justify-between">
-                <span class="text-sm text-gray-500">{% if item.streak %}{{ item.streak }}{% else %}0{% endif %} day streak</span>
-                <button class="btn bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">
-                    {% if item.action %}{{ item.action }}{% else %}Mark Complete{% endif %}
-                </button>
+            <div class="leading-tight">
+              <h3 class="text-lg font-semibold text-gray-900">
+                {{ habit.name }}
+              </h3>
+              <p class="text-sm text-gray-500">
+                Daily habit
+              </p>
             </div>
+          </div>
+
+          <span class="text-xs font-medium text-sky-700 bg-sky-50 border border-sky-100 px-2.5 py-1 rounded-full">
+            0 day streak
+          </span>
         </div>
-        {% empty %}
-        <div class="card bg-white rounded-xl shadow-sm p-6 col-span-full text-center">
-            <p class="text-gray-600">No habits yet. Start building your first habit!</p>
+
+        <p class="text-gray-600 mb-6">
+          {% if habit.description %}{{ habit.description }}{% else %}Track your daily habits and build consistency.{% endif %}
+        </p>
+
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-2 text-sm text-gray-500">
+            <span class="inline-block h-2 w-2 rounded-full bg-sky-500/80 animate-pulse"></span>
+            <span>Каждый день</span>
+          </div>
+
+          <div class="flex items-center gap-1">
+            {% for log in habit.logs.all %}
+              {% if log.progress_mark %}
+                <div class="w-6 h-6 rounded-full bg-green-500 flex items-center justify-center text-white text-sm font-bold shadow-sm">
+                  ✓
+                </div>
+              {% else %}
+                <div class="w-6 h-6 rounded-full bg-gray-200 border-2 border-gray-300 flex items-center justify-center text-gray-500 text-sm font-bold shadow-sm">
+                  ×
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
         </div>
-        {% endfor %}
+      </div>
+      {% empty %}
+      <div class="rounded-2xl border border-gray-200 bg-white shadow-sm p-10 col-span-full text-center">
+        <a href="{% url 'habits:habit_list' %}" class="mx-auto w-12 h-12 rounded-xl bg-sky-50 border border-sky-100 flex items-center justify-center mb-4 hover:bg-sky-100 transition">
+          <svg class="w-6 h-6 text-sky-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 4v16m8-8H4"></path>
+          </svg>
+        </a>
+        <p class="text-gray-900 font-semibold">Привычек пока нет</p>
+        <p class="text-gray-600 mt-1">Начните строить свою первую привычку!</p>
+      </div>
+      {% endfor %}
     </div>
 
+    <!-- Bottom CTA -->
     <div class="text-center">
-        <button class="btn bg-gray-900 hover:bg-gray-800 text-white px-8 py-3 rounded-lg text-lg font-medium transition-all duration-300 hover:scale-105">
-            Get Started
-        </button>
+      <a href="{% url 'habits:habit_list' %}"
+         class="inline-flex items-center justify-center rounded-2xl border border-sky-100 bg-white/80 px-8 py-4
+                text-gray-900 font-semibold shadow-sm hover:shadow-md hover:border-sky-200 transition backdrop-blur">
+        К привычкам →
+      </a>
     </div>
+  </div>
 </div>
+{% endblock %}
