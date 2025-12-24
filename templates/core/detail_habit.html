@@ -1,0 +1,64 @@
+{% extends 'core/base.html' %}
+
+{% block title %}{{ habit.name }}{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 py-8 animate-fade-in">
+    <div class="bg-white rounded-lg shadow-md p-6 mb-8 animate-slide-up" style="animation-delay: 0.1s">
+        <div class="flex justify-between items-start mb-4">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900 mb-2">{{ habit.name }}</h1>
+                {% if habit.description %}
+                    <p class="text-gray-600 text-lg">{{ habit.description }}</p>
+                {% endif %}
+            </div>
+            <div class="flex space-x-3">
+                <a href="{% url 'habits:habit_update' habit.pk %}" class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg font-medium transition-all duration-300 hover:animate-pulse-glow">
+                    Редактировать
+                </a>
+                <a href="{% url 'habits:habit_delete' habit.pk %}" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-medium transition-all duration-300 hover:animate-pulse-glow">
+                    Удалить
+                </a>
+            </div>
+        </div>
+
+        <div class="border-t pt-6">
+            <h2 class="text-xl font-semibold text-gray-900 mb-4">Прогресс Сегодня</h2>
+            <form method="post" action="{% url 'habits:toggle_habit_done_today' habit.pk %}" class="inline">
+                {% csrf_token %}
+                <button type="submit" class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-medium transition-all duration-300 hover:animate-bounce-in">
+                    {% if today_log and today_log.progress_mark %}
+                        Отметить как Не Выполнено
+                    {% else %}
+                        Отметить как Выполнено Сегодня
+                    {% endif %}
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div class="bg-white rounded-lg shadow-md p-6 animate-slide-up" style="animation-delay: 0.2s">
+        <h2 class="text-xl font-semibold text-gray-900 mb-4">История Привычки</h2>
+        {% if habit.logs.all %}
+            <div class="space-y-3">
+                {% for log in habit.logs.all|dictsortreversed:"date" %}
+                <div class="flex justify-between items-center py-2 border-b border-gray-100 last:border-b-0 animate-slide-in-left" style="animation-delay: {{ forloop.counter }}0ms">
+                    <span class="text-gray-900">{{ log.date|date:"M d, Y" }}</span>
+                    <span class="{% if log.progress_mark %}text-green-600{% else %}text-red-600{% endif %} font-medium transition-colors">
+                        {% if log.progress_mark %}Выполнено{% else %}Не Выполнено{% endif %}
+                    </span>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-gray-500 text-center py-8 animate-fade-in" style="animation-delay: 0.3s">Записей о привычке пока нет. Начните отслеживать свой прогресс!</p>
+        {% endif %}
+    </div>
+
+    <div class="mt-8 text-center animate-slide-up" style="animation-delay: 0.4s">
+        <a href="{% url 'habits:habit_list' %}" class="text-blue-600 hover:text-blue-800 font-medium transition-all duration-300 hover:animate-float">
+            ← Назад ко Всем Привычкам
+        </a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Habits{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 py-8">
+    <div class="flex justify-between items-center mb-8 animate-fade-in">
+        <h1 class="text-3xl font-bold text-gray-900 animate-slide-in-left">Мои Привычки</h1>
+        <a href="{% url 'habits:habit_create' %}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-all duration-300 hover:animate-bounce-in animate-slide-in-right">
+            Добавить Новую Привычку
+        </a>
+    </div>
+
+    {% if habits %}
+        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3 animate-fade-in">
+            {% for habit in habits %}
+            <a href="{% url 'habits:habit_detail' habit.pk %}" class="block bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-all duration-300 animate-slide-up hover:animate-float cursor-pointer" style="animation-delay: {{ forloop.counter0 }}00ms">
+                <div class="flex justify-between items-start">
+                    <div class="flex-1">
+                        <h2 class="text-xl font-semibold text-gray-900 mb-2">{{ habit.name }}</h2>
+                        {% if habit.description %}
+                            <p class="text-gray-600">{{ habit.description }}</p>
+                        {% endif %}
+                    </div>
+                    <div class="ml-4">
+                        {% if habit.today_completed %}
+                            <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center animate-bounce-in">
+                                <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div>
+                        {% else %}
+                            <div class="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center">
+                                <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="text-center py-12">
+            <div class="text-gray-400 mb-4">
+                <svg class="mx-auto h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                </svg>
+            </div>
+            <h3 class="text-lg font-medium text-gray-900 mb-2">Привычек пока нет</h3>
+            <p class="text-gray-500 mb-6">Начните строить лучшие привычки, создав свою первую.</p>
+            <a href="{% url 'habits:habit_create' %}" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium transition-colors">
+                Создать Первую Привычку
+            </a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

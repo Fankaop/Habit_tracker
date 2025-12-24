@@ -1,0 +1,85 @@
+{% extends 'core/base.html' %}
+
+{% block title %}
+    {% if form.instance.pk %}Edit Habit{% else %}Create New Habit{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto px-4 py-8">
+    <div class="bg-white rounded-lg shadow-md p-6">
+        <div class="mb-6">
+            <h1 class="text-3xl font-bold text-gray-900">
+                {% if form.instance.pk %}Редактировать Привычку{% else %}Создать Новую Привычку{% endif %}
+            </h1>
+            <p class="text-gray-600 mt-2">
+                {% if form.instance.pk %}Обновите детали привычки ниже.{% else %}Начните строить новую положительную привычку.{% endif %}
+            </p>
+        </div>
+
+        <form method="post" class="space-y-8 animate-fade-in">
+            {% csrf_token %}
+
+            <div class="animate-slide-up" style="animation-delay: 0.1s">
+                <label for="{{ form.name.id_for_label }}" class="block text-lg font-semibold text-gray-800 mb-3">
+                    Название Привычки
+                </label>
+                {{ form.name }}
+                {% if form.name.errors %}
+                    <div class="mt-2 text-red-600 text-sm animate-shake">
+                        {{ form.name.errors.0 }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="animate-slide-up" style="animation-delay: 0.2s">
+                <label for="{{ form.description.id_for_label }}" class="block text-lg font-semibold text-gray-800 mb-3">
+                    Описание (Необязательно)
+                </label>
+                {{ form.description }}
+                {% if form.description.errors %}
+                    <div class="mt-2 text-red-600 text-sm animate-shake">
+                        {{ form.description.errors.0 }}
+                    </div>
+                {% endif %}
+                <p class="mt-2 text-sm text-gray-500">Предоставьте дополнительные детали о вашей привычке.</p>
+            </div>
+
+            <div class="flex justify-end space-x-4 pt-6 border-t">
+                <a href="{% url 'habits:habit_list' %}" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded-lg font-medium transition-colors">
+                    Отмена
+                </a>
+                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors">
+                    {% if form.instance.pk %}Обновить Привычку{% else %}Создать Привычку{% endif %}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    input[type="text"], textarea {
+        border: 3px solid #000000 !important;
+        border-radius: 0.75rem;
+        padding: 1.25rem 1.5rem;
+        font-size: 1.125rem;
+        font-weight: 500;
+        width: 100%;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        background-color: #ffffff;
+        color: #374151;
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    }
+    input[type="text"]:focus, textarea:focus {
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15), 0 4px 6px -1px rgba(59, 130, 246, 0.1);
+        transform: translateY(-2px) scale(1.01);
+        background-color: #fefefe;
+    }
+    textarea {
+        min-height: 120px;
+        resize: vertical;
+        line-height: 1.6;
+    }
+</style>
+{% endblock %}
