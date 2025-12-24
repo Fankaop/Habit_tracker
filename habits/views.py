@@ -37,18 +37,18 @@ class HabitCreateView(CreateView):
     model = Habit
     form_class = HabitCreateForm
     template_name = 'core/habit_form.html'
-    success_url = reverse_lazy('habit_list')
+    success_url = reverse_lazy('habits:habit_list')
 
 class HabitUpdateView(UpdateView):
     model = Habit
     form_class = HabitCreateForm
     template_name = 'core/habit_form.html'
-    success_url = reverse_lazy('habit_list')
+    success_url = reverse_lazy('habits:habit_list')
 
 class HabitDeleteView(DeleteView):
     model = Habit
     template_name = 'core/habit_confirm_delete.html'
-    success_url = reverse_lazy('habit_list')
+    success_url = reverse_lazy('habits:habit_list')
 
 @require_POST
 @transaction.atomic
@@ -71,4 +71,4 @@ def toggle_habit_done_today(request, pk):
         f' {habit.name}: отмечено за {today} = {log.progress_mark}'
     )
     
-    return redirect('habit_detail', pk=habit.pk)
+    return redirect('habits:habit_detail', pk=habit.pk)
