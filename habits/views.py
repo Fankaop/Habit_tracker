@@ -57,7 +57,7 @@ def toggle_habit_done_today(request, pk):
     today = date.today()
 
     log, created = Habitlog.objects.select_for_update().get_or_create(
-        name = habit,
+        habit = habit,
         date = today,
         defaults={'progress_mark': True},
     )

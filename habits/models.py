@@ -7,6 +7,14 @@ class Habit(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
 class Habitlog(models.Model):
-    name = models.ForeignKey("Habit",on_delete=models.CASCADE, related_name='logs')
+    habit = models.ForeignKey('Habit', on_delete=models.CASCADE,related_name='logs')
     date = models.DateField()
     progress_mark = models.BooleanField(default=False)
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['habit', 'date'], name= 'unic_habit_date')
+        ]
+        indexes = [
+            models.Index(fields=['habit', 'date']),
+            models.Index(fields=['habit', 'progress_mark', 'date'])
+        ]
